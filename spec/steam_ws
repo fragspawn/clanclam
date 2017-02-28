@@ -8,3 +8,6 @@ http://api.steampowered.com/ISteamUser/GetFriendList/v0001/?key=XXXXXXXXXXXXXXXX
 
 // GAMES played in the last two weeks
 http://api.steampowered.com/IPlayerService/GetRecentlyPlayedGames/v0001/?key=XXXXXXXXXXXXXXXXX&steamid=76561197960434622&format=json
+
+// Get Community
+http://steamcommunity.com/gid/<GroupID>/memberslistxml/?xml=1
