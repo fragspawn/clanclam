@@ -24,7 +24,6 @@ function print_header() {
 <head>
 </head>
 <body>
-
 <?php
 } 
 
@@ -48,8 +47,15 @@ function print_footer() {
     echo '<br>POST: ';
     print_r($_POST);
 ?>
-
 </html>
 <?php
 } 
+
+function steam_id_form() {
+?>
+<form>
+    <input type="text" name="steamID" id="steamID" onChange="submitSteamID()">
+</form>
+<?php
+}
 ?>

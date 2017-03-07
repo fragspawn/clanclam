@@ -7,6 +7,7 @@ function get_user_info_from_steam($steam_id) {
 }
 
 function get_clan_info_from_steam($clan_id) {
-    $res = file_get_contents("http://steamcommunity.com/gid/" . $clan_id . "/memberslistxml/?xml=1");
+    $res = simplexml_load_file("http://steamcommunity.com/gid/" . $clan_id . "/memberslistxml/?xml=1") or die("died");
+    return $res;
 }
 ?>
