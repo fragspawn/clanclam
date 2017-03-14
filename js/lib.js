@@ -1,5 +1,5 @@
 function validateAnInput(inputValue) {
-    if(inputValue == '' || inputValue.checkValidity() == false) {
+    if(inputValue.value == '' || inputValue.checkValidity() == false) {
         return false;
     } else {
         return true;
