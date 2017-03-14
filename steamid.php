@@ -5,13 +5,18 @@
 // steam_ID helza_belza = 76561198058035034
 //    $steam_info = get_user_info_from_steam('76561198058035034');
 // steam_ID frae_spawn  = 76561197974169039
-    $steam_info = get_user_info_from_steam('76561197974169039');
+    $steam_info = get_user_info_from_steam('76561197974169032');
 
+    print_r($steam_info);
+    if(empty($steam_info['response']['players'])) {
+        echo 'foo';
+    }
+    die();
 //PRINT 1st PLAYER DATA 
 /*    foreach($steam_info['response']['players'][0] as $key=>$item) {
         echo $key . ' ' . $item . ',';
     }
-    personaname, avatar
+die();
  */
 
 // GET CLAN INFO IN XML

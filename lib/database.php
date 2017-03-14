@@ -24,9 +24,4 @@ function select_data($sql_string) {
     $result = $stmt->fetchAll(PDO::FETCH_ASSOC); 
     return $result;
 }
-
-function get_user_info_from_steam() {
-    $res = file_get_contents("http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=36645A199F6F88593FED376EF94613C8&steamids=76561198058035034");
-    echo var_dump(json_decode($res));
-}
 ?>
