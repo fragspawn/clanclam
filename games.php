@@ -7,24 +7,13 @@
     include './vue/ui.php';
 
     check_session();
-    include './vue/header.php';
-    print_menu();
-
-    // headline
-    echo '<div class="jumbotron">';
-    echo '<h3>' . $_GET['pageid'] . '</h3>';
-    echo '</div>';
-
-    // body
-    echo '  <div class="container">';
-    echo '  <div class="row">';
     // Dynamic Content Goes here  
     if(isset($_GET['pageid'])) {
-        if($_GET['pageid'] == 'steamIDSearch') {
+        if($_GET['pageid'] == 'gamesPlayed') {
             if(isset($_POST['steamID'])) {
-                show_steam_user_info($_POST['steamID']); 
+                show_games_played($_POST['steamID']); 
             } elseif(isset($_GET['steamID'])) {
-                show_steam_user_info($_GET['steamID']); 
+                show_games_played($_GET['steamID']); 
             } else {
                 throw_error_message('Steam ID Not entered');
             }
@@ -40,10 +29,4 @@
     } else {
         echo "catch all";
     }
-
-    // End Dynamic Content 
-    echo '</div>';
-    echo '</div>';
-  
-    include './vue/footer.php';
 ?>

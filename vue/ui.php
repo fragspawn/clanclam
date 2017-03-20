@@ -1,7 +1,6 @@
 <?php
 
 // Generic UI functions
-
 function print_menu() {
     echo '<nav class="navbar navbar-inverse navbar-fixed-top">';
     if($_SESSION['user'] == 'admin') {
@@ -24,7 +23,7 @@ function print_menu() {
     }
     echo '<form method="POST" action="./index.php?pageid=steamIDSearch" class="navbar-form navbar-right" novalidate onSubmit="return validateAnInput(steamID);">
             <div class="form-group">
-              <input type="number" name="steamID" id="steamID" width="17" pattern="[0-9]{17}" maxlength="17" size="17" min="10000000000000000" max="99999999999999999" placeholder="STEAMID" class="form-control">
+              <input type="number" name="steamID" id="steamID" width="17" pattern="[0-9]{17}" maxlength="17" size="17" min="10000000000000000" max="99999999999999999" placeholder="STEAMID" class="form-control" value="76561197974169039">
             </div>
             <button type="submit" class="btn btn-success">Search</button>
           </form>
@@ -37,12 +36,48 @@ function show_steam_user_info($steamID) {
     if($res == false) {
         throw_error_message('Steam ID Not Found');
     } else {
-        echo '<div class="col-md-4">
-        <h2>Steam Info</h2>
-            <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
-                <p><a class="btn btn-default" href="#" role="button">View details »</a></p>
-                </div>';
+        echo '
+        <div class="col-md-4">
+            <h3><a href="#" onClick="showGames(\'' . $steamID .  '\')">' . htmlentities($res[0]['personaname']) . '</a></h3>';
+            echo '<img src="' . $res[0]['avatar'] . '">';
+            echo '<h4>Last Login:' . date('d/m/Y H:i:s', $res[0]['lastlogoff']) . '</h4>';
+        echo '</div>';
+        echo '<div class="col-md-4">';
+        $clan_details = get_clan_info_from_steam($res[0]['primaryclanid']);
+        echo '<h3><img src="' . $clan_details->groupDetails->avatarIcon . '">';
+        echo $clan_details->groupDetails->groupName . '</h3>';
+        if($clan_details == false) {
+            throw_error_message('No Clan Info Found');
+        } else {
+            foreach($clan_details->members->steamID64 as $steamID) {
+                $user = get_user_info_from_steam($steamID);
+                if($user == false) {
+                    echo 'No User';
+                } else {
+                    echo '<img src="' . $user[0]['avatar'] . '">';
+                    echo '<h3><a href="#" onClick="showGames(\'' . $steamID . '\')")>' . htmlentities($user[0]['personaname']) . '</a></h3>';
+                    if(isset($user[0]['primaryclanid'])) {
+                        if($user[0]['primaryclanid'] != $res[0]['primaryclanid']) {
+                            echo '<a href="./index.php?pageid=steamIDSearch&steamID=' . $steamID . '">ALT CLAN</a>';
+                        }
+                    } else {
+                        echo '<a href="#">NO CLAN</a>';
+                    }
+
+                    echo '<h4>Last Login:' . date('d/m/Y H:i:s', $user[0]['lastlogoff']) . '</h4>';
+                }
+            }
+        }
+        echo '</div>';
+        echo '
+        <div class="col-md-4" id="gamesplayed">
+            <h3>Games Played</h3>
+        </div>';
     }
+}
+function show_games_played($steamID) {
+    $res = get_games_played($steamID);
+    print_r($res);
 }
 
 function throw_error_message($msg) {

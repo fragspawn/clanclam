@@ -5,25 +5,30 @@
 // steam_ID helza_belza = 76561198058035034
 //    $steam_info = get_user_info_from_steam('76561198058035034');
 // steam_ID frae_spawn  = 76561197974169039
-    $steam_info = get_user_info_from_steam('76561197974169032');
+$steam_info = get_user_info_from_steam('76561197974169039');
+    if($steam_info == false) {
+        echo 'dead';
+        die();
+    }
 
-    print_r($steam_info);
-    if(empty($steam_info['response']['players'])) {
-        echo 'foo';
+    if(empty($steam_info[0])) {
+        echo 'empty';
+        die();
     }
-    die();
+
 //PRINT 1st PLAYER DATA 
-/*    foreach($steam_info['response']['players'][0] as $key=>$item) {
-        echo $key . ' ' . $item . ',';
+    foreach($steam_info[0] as $key => $value) {
+        echo $key . ' ' . $value . ',';
     }
-die();
- */
 
 // GET CLAN INFO IN XML
-    if(isset($steam_info['response']['players'][0]['primaryclanid'])) {
-        $clan_xml = get_clan_info_from_steam($steam_info['response']['players'][0]['primaryclanid']);
-        echo $steam_info['response']['players'][0]['personaname'];
-        echo '<img src="' . $steam_info['response']['players'][0]['avatar'] . '"/>';
+    if(isset($steam_info[0]['primaryclanid'])) {
+        $clan_xml = get_clan_info_from_steam($steam_info[0]['primaryclanid']);
+        print_r($clan_xml);
+        die();
+
+        echo $steam_info[0]['personaname'];
+        echo '<img src="' . $steam_info[0]['avatar'] . '"/>';
     } else {
         echo 'no clan';
         die();
@@ -32,9 +37,9 @@ die();
     //var_dump($clan_xml->members);
     foreach($clan_xml->members->steamID64 as $steamID) {
         $steam_clan_info = get_user_info_from_steam($steamID);
-        if(isset($steam_clan_info['response']['players'][0]['primaryclanid'])) {
-            echo $steam_clan_info['response']['players'][0]['personaname'] . ' ';
-            if($steam_info['response']['players'][0]['primaryclanid'] != $steam_clan_info['response']['players'][0]['primaryclanid']) {
+        if(isset($steam_clan_info[0]['primaryclanid'])) {
+            echo $steam_clan_info[0]['personaname'] . ' ';
+            if($steam_info[0]['primaryclanid'] != $steam_clan_info[0]['primaryclanid']) {
                 echo '*';
             }
         }

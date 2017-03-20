@@ -5,3 +5,7 @@ function validateAnInput(inputValue) {
         return true;
     }
 }
+
+function showGames(steamID) { 
+    $('#gamesplayed').load('./games.php?pageid=gamesPlayed&steamID=' + steamID);
+}
