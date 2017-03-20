@@ -7,5 +7,7 @@ function validateAnInput(inputValue) {
 }
 
 function showGames(steamID) { 
-    $('#gamesplayed').load('./games.php?pageid=gamesPlayed&steamID=' + steamID);
+    var url = './games.php?pageid=gamesPlayed&steamID=' + steamID; 
+    console.log(url);
+    $('#gamesplayed').load(url);
 }

@@ -38,10 +38,10 @@ function get_clan_info_from_steam($clan_id) {
 function get_games_played($steam_id) {
     $res = file_get_contents("http://api.steampowered.com/IPlayerService/GetRecentlyPlayedGames/v0001/?key=36645A199F6F88593FED376EF94613C8&steamid=" .$steam_id . "&format=json");
     $res_array = json_decode($res, true);
-    if(empty($res_array['response']['players'])) {
+    if(empty($res_array['response'])) {
         return false;
     } else {
-        return $res_array;
+        return $res_array['response'];
     }
 }
 ?>

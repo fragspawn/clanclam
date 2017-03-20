@@ -77,7 +77,18 @@ function show_steam_user_info($steamID) {
 }
 function show_games_played($steamID) {
     $res = get_games_played($steamID);
-    print_r($res);
+    if($res) {
+        echo '<h2>Games Played</h2>';
+        for($loop=0;$loop<$res['total_count'];$loop++) {
+            echo '<div>';
+            echo '<img src="' . $res['games'][$loop]['img_icon_url'] . '">';
+            echo $res['games'][$loop]['name'];
+            $hours = floor($res['games'][$loop]['playtime_forever'] / 60);
+            $minutes = $res['games'][$loop]['playtime_forever'] % 60;
+            echo ' ' . $hours . 'h ' . $minutes . 'm '; 
+            echo '</div>';
+        }
+    }
 }
 
 function throw_error_message($msg) {
