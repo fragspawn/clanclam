@@ -11,6 +11,11 @@ function get_user_info_from_steam($steam_id) {
 }
 
 function get_users_info_from_steam($steam_ids) {
+    // URL length maxes at 50 steamIDs, your server may be different...
+    // Steam API will accept 100
+    if(count($steam_ids) > 50) {
+        $steam_ids = array_slice($steam_ids, 0, 49);
+    }
     $steam_comma_ids = '';
     foreach($steam_ids as $steam_id) {
         $steam_comma_ids .= $steam_id . ',';
@@ -18,6 +23,7 @@ function get_users_info_from_steam($steam_ids) {
     $steam_comma_ids = substr($steam_comma_ids, 0, -1);
 
     $res = file_get_contents("http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=36645A199F6F88593FED376EF94613C8&steamids=" . $steam_comma_ids);
+    
     $res_array = json_decode($res, true);
     if(empty($res_array['response']['players'])) {
         return false;

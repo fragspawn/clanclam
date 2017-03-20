@@ -24,11 +24,16 @@ $steam_info = get_user_info_from_steam('76561197974169039');
 // GET CLAN INFO IN XML
     if(isset($steam_info[0]['primaryclanid'])) {
         $clan_xml = get_clan_info_from_steam($steam_info[0]['primaryclanid']);
-        print_r($clan_xml);
+        foreach($clan_xml->members->steamID64 as $steamID) {
+            $steamIDarray[] = $steamID;
+        }
+        $all_clan_users = get_users_info_from_steam($steamIDarray);
+        print_r($all_clan_users);
         die();
-
-        echo $steam_info[0]['personaname'];
-        echo '<img src="' . $steam_info[0]['avatar'] . '"/>';
+        foreach($all_clan_users as $clan_user) {
+            echo $clan_user['personaname'];
+            echo '<img src="' . $clan_user['avatar'] . '"/>';
+        }
     } else {
         echo 'no clan';
         die();

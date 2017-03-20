@@ -50,23 +50,25 @@ function show_steam_user_info($steamID) {
             throw_error_message('No Clan Info Found');
         } else {
             foreach($clan_details->members->steamID64 as $steamID) {
-                $user = get_user_info_from_steam($steamID);
-                if($user == false) {
-                    echo 'No User';
-                } else {
-                    echo '<img src="' . $user[0]['avatar'] . '">';
-                    echo '<h3><a href="#" onClick="showGames(\'' . $steamID . '\')")>' . htmlentities($user[0]['personaname']) . '</a></h3>';
-                    if(isset($user[0]['primaryclanid'])) {
-                        if($user[0]['primaryclanid'] != $res[0]['primaryclanid']) {
-                            echo '<a href="./index.php?pageid=steamIDSearch&steamID=' . $steamID . '">ALT CLAN</a>';
+                $steamIDarray[] = $steamID;
+            }
+
+            $all_clan_users = get_users_info_from_steam($steamIDarray);
+
+            foreach($all_clan_users as $clan_user) {
+                echo '<img src="' . $clan_user['avatar'] . '">';
+                echo '<h3><a href="#" onClick="showGames(\'' . $clan_user['steamid'] . '\')")>' . htmlentities($clan_user['personaname']) . '</a></h3>';
+                    if(isset($clan_user['primaryclanid'])) {
+                        if($clan_user['primaryclanid'] != $res[0]['primaryclanid']) {
+                            echo '<a href="./index.php?pageid=steamIDSearch&steamID=' . $clan_user['steamid'] . '">ALT CLAN</a>';
                         }
                     } else {
                         echo '<a href="#">NO CLAN</a>';
                     }
 
-                    echo '<h4>Last Login:' . date('d/m/Y H:i:s', $user[0]['lastlogoff']) . '</h4>';
-                }
+                    echo '<h4>Last Login:' . date('d/m/Y H:i:s', $clan_user['lastlogoff']) . '</h4>';
             }
+
         }
         echo '</div>';
         echo '
@@ -75,13 +77,14 @@ function show_steam_user_info($steamID) {
         </div>';
     }
 }
+
 function show_games_played($steamID) {
     $res = get_games_played($steamID);
-    if($res) {
+    if($res) { 
         echo '<h2>Games Played</h2>';
         for($loop=0;$loop<$res['total_count'];$loop++) {
             echo '<div>';
-            echo '<img src="' . $res['games'][$loop]['img_icon_url'] . '">';
+            echo '<img src="http://media.steampowered.com/steamcommunity/public/images/apps/' . $res['games'][$loop]['img_logo_url'] . '.jpg">';
             echo $res['games'][$loop]['name'];
             $hours = floor($res['games'][$loop]['playtime_forever'] / 60);
             $minutes = $res['games'][$loop]['playtime_forever'] % 60;
