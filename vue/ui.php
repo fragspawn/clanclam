@@ -9,8 +9,8 @@ function print_menu() {
         echo '<li><a href="./index.php?pageid=logoutPage">logout</a></li>';
         echo '</ul>';
     }
-    if($_SESSION['user'] == 'member') {
-        echo '<a class="navbar-brand">USER: logout</a>';
+    if(is_numeric($_SESSION['user'])) {
+        echo '<a class="navbar-brand">USER: ' . htmlentities($_SESSION['user_name']) . '</a>';
         echo '<ul class="nav navbar-nav">';
         echo '<li><a href="./index.php?pageid=logoutPage">logout</a></li>';
         echo '</ul>';
@@ -36,6 +36,8 @@ function show_steam_user_info($steamID) {
     if($res == false) {
         throw_error_message('Steam ID Not Found');
     } else {
+        add_steam_id_to_session($steamID, $res[0]['personaname']);
+        add_steam_info_to_database($res[0]);
         echo '
         <div class="col-md-4">
             <h3><a href="#" onClick="showGames(\'' . $steamID .  '\')">' . htmlentities($res[0]['personaname']) . '</a></h3>';

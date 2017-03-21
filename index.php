@@ -12,7 +12,9 @@
 
     // headline
     echo '<div class="jumbotron">';
-    echo '<h3>' . $_GET['pageid'] . '</h3>';
+    if(isset($_GET['pageid'])) { 
+        echo '<h3>' . $_GET['pageid'] . '</h3>';
+    }
     echo '</div>';
 
     // body
@@ -33,12 +35,18 @@
             echo 'loginPage';            
         }
         if($_GET['pageid'] == 'logoutPage') {
+            session_destroy();
             echo 'logoutPage';            
         }
-    } elseif(true) {
-        echo "ElseIF";
+ //   } elseif(true) {
+ //     echo "ElseIF";
     } else {
-        echo "catch all";
+        // page load, no GET or POST, but SESSION
+        if(isset($_SESSION['user'])) {
+            if(is_numeric($_SESSION['user'])) {
+                show_steam_user_info($_SESSION['user']); 
+            }
+        }
     }
 
     // End Dynamic Content 

@@ -9,9 +9,15 @@ function database_connect() {
 
 // Insert data into the database
 // Assume array is key/value par, where key = colunm name
-function insert_data($table_name, $data_array) {
+function add_steam_info_to_database($data_array) {
     $conn = database_connect();
-    $stmt = $conn->prepare("INSERT INTO"); 
+    // check to see if clan ID exists, if not insert
+    $sql_select_user = "SELECT * FROM members WHERE mem_id = '" . $data_array['steamid'] . "';"; 
+    $sql_select_clan = "SELECT * FROM clans WHERE clan_id = '" . $data_array['primaryclanid'] . "';"; 
+    $insert_clan = "INSERT INTO clans (clan_id) VALUES ('" . $data_array['primaryclanid'] . "');"; 
+    $insert_user = "INSERT INTO members (mem_id) VALUES ('" . $data_array['steamid'] . "');"; 
+    // check to see if user ID exists, if not insert
+    $stmt = $conn->prepare($sql); 
     $stmt->execute(); 
     return $conn->lastInsertId();
 }

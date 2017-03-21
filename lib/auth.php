@@ -7,4 +7,8 @@ function check_session() {
     }
 }
 
+function add_steam_id_to_session($steamID, $steamRealName) {
+    $_SESSION['user'] = $steamID;
+    $_SESSION['user_name'] = $steamRealName;
+}
 ?>
